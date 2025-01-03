@@ -45,7 +45,7 @@ class TestControllerTest {
     public void getAllMembers() throws Exception {
         // given
         final String url = "/test";
-        Member savedMewmber = memberRepository.save(new Member(1L, "홍길동"));
+        Member savedMember = memberRepository.save(new Member(1L, "홍길동"));
 
         // when
         final ResultActions result = mockMvc.perform(get(url)
@@ -55,7 +55,7 @@ class TestControllerTest {
         result
                 .andExpect(status().isOk())
                 // 응답의 0번째 값이 DB에 저장한 값과 같은지 확인
-                .andExpect(jsonPath("$[0].id").value(savedMewmber.getId()))
-                .andExpect(jsonPath("$[0].name").value(savedMewmber.getName()));
+                .andExpect(jsonPath("$[0].id").value(savedMember.getId()))
+                .andExpect(jsonPath("$[0].name").value(savedMember.getName()));
     }
 }

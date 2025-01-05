@@ -40,3 +40,6 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+# application-secret.yml 파일을 무시하도록 설정
+application-secret.yml

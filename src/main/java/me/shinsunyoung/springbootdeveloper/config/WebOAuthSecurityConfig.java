@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import me.shinsunyoung.springbootdeveloper.config.jwt.TokenProvider;
 import me.shinsunyoung.springbootdeveloper.config.oauth.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import me.shinsunyoung.springbootdeveloper.config.oauth.OAuth2SuccessHandler;
-import me.shinsunyoung.springbootdeveloper.config.oauth.OAuth2UsercustomService;
+import me.shinsunyoung.springbootdeveloper.config.oauth.OAuth2UserCustomService;
 import me.shinsunyoung.springbootdeveloper.repository.RefreshTokenRepository;
 import me.shinsunyoung.springbootdeveloper.service.UserService;
 import org.springframework.context.annotation.Bean;
@@ -25,7 +25,7 @@ import static org.springframework.boot.autoconfigure.security.servlet.PathReques
 @RequiredArgsConstructor
 @Configuration
 public class WebOAuthSecurityConfig {
-    private final OAuth2UsercustomService oAuth2UsercustomService;
+    private final OAuth2UserCustomService oAuth2UserCustomService;
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
     private final UserService userService;
@@ -55,14 +55,14 @@ public class WebOAuthSecurityConfig {
                 // 토큰 재발급 URL은 인증 없이 접근 가능하도록 설정. 나머지 API URL은 인증 필요
                 .authorizeRequests(auth -> auth
                         .requestMatchers(new AntPathRequestMatcher("/api/token")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/token")).authenticated()
+                        .requestMatchers(new AntPathRequestMatcher("/api/**")).authenticated()
                         .anyRequest().permitAll())
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/login")
                         // Authorization 요청과 관련된 상태 저장
                         .authorizationEndpoint(authorizationEndpoint -> authorizationEndpoint
                                 .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository()))
-                        .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint.userService(oAuth2UsercustomService))
+                        .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint.userService(oAuth2UserCustomService))
                         // 인증 싱공 시 실행할 핸들러
                         .successHandler(oAuth2SuccessHandler())
                 )

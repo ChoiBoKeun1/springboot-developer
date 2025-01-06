@@ -18,9 +18,6 @@ spring:
     console:
       enabled: true
 
-  config:
-    import: application-secret.yml
-
   security:
     oauth2:
       client:
